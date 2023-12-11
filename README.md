@@ -1,5 +1,5 @@
 # Netflix-clone-website
-Created a clone website of Netflix .
+Created a clone website for Netflix. Looks similar to these below pictures
 
 ![Screenshot 2023-12-11 123545](https://github.com/Prasu7432/Netflix-clone-website/assets/137610262/06dfdc16-4181-4fb0-a2c9-46424334d0a8)
 ![Screenshot 2023-12-11 123607](https://github.com/Prasu7432/Netflix-clone-website/assets/137610262/5920fdef-bda7-4272-a24c-badd9ebfe2bd)
