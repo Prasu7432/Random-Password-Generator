@@ -1,131 +1,105 @@
+# Python program to generate random
+# password using Tkinter module
+import random
+import pyperclip
 from tkinter import *
-from tkinter import messagebox
+from tkinter.ttk import *
 
-def reset_entry():
-    age_tf.delete(0,'end')
-    height_tf.delete(0,'end')
-    weight_tf.delete(0,'end')
+# Function for calculation of password
 
-def calculate_bmi():
-    kg = int(weight_tf.get())
-    m = int(height_tf.get())/100
-    bmi = kg/(m*m)
-    bmi = round(bmi, 1)
-    bmi_index(bmi)
 
-def bmi_index(bmi):
+def low():
+	entry.delete(0, END)
+
+	# Get the length of password
+	length = var1.get()
+
+	lower = "abcdefghijklmnopqrstuvwxyz"
+	upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !@#$%^&*()"
+	password = ""
     
-    if bmi < 18.5:
-        messagebox.showinfo('bmi-pythonguides', f'BMI = {bmi} is Underweight')
-    elif (bmi > 18.5) and (bmi < 24.9):
-        messagebox.showinfo('bmi-pythonguides', f'BMI = {bmi} is Normal')
-    elif (bmi > 24.9) and (bmi < 29.9):
-        messagebox.showinfo('bmi-pythonguides', f'BMI = {bmi} is Overweight')
-    elif (bmi > 29.9):
-        messagebox.showinfo('bmi-pythonguides', f'BMI = {bmi} is Obesity') 
-    else:
-        messagebox.showerror('bmi-pythonguides', 'something went wrong!')   
 
-ws = Tk()
-ws.title('PythonGuides')
-ws.geometry('500x500')
-ws.config(bg='#686e70')
+	# if strength selected is low
+	if var.get() == 1:
+		for i in range(0, length):
+			password = password + random.choice(lower)
+		return password
 
+	# if strength selected is medium
+	elif var.get() == 0:
+		for i in range(0, length):
+			password = password + random.choice(upper)
+		return password
+
+	# if strength selected is strong
+	elif var.get() == 3:
+		for i in range(0, length):
+			password = password + random.choice(digits)
+		return password
+	else:
+		print("Please choose an option")
+
+
+# Function for generation of password
+def generate():
+	password1 = low()
+	entry.insert(10, password1)
+
+
+# Function for copying password to clipboard
+def copy1():
+	random_password = entry.get()
+	pyperclip.copy(random_password)
+
+
+# Main Function
+
+# create GUI window
+root = Tk()
 var = IntVar()
+var1 = IntVar()
 
-frame = Frame(
-    ws,
-    padx=100, 
-    pady=100
-)
-frame.pack(expand=True)
+# Title of your GUI window
+root.title("Random Password Generator")
 
+# create label and entry to show
+# password generated
+Random_password = Label(root, text="Password")
+Random_password.grid(row=0)
+entry = Entry(root)
+entry.grid(row=0, column=1)
 
-age_lb = Label(
-    frame,
-    text="Enter Age (2 - 120)"
-)
-age_lb.grid(row=1, column=1)
+# create label for length of password
+c_label = Label(root, text="Length")
+c_label.grid(row=1)
 
-age_tf = Entry(
-    frame, 
-)
-age_tf.grid(row=1, column=2, pady=10)
+# create Buttons Copy which will copy
+# password to clipboard and Generate
+# which will generate the password
+copy_button = Button(root, text="Copy", command=copy1)
+copy_button.grid(row=0, column=2)
+generate_button = Button(root, text="Generate", command=generate)
+generate_button.grid(row=0, column=3)
 
-gen_lb = Label(
-    frame,
-    text='Select Gender'
-)
-gen_lb.grid(row=2, column=1)
+# Radio Buttons for deciding the
+# strength of password
+# Default strength is Medium
+radio_low = Radiobutton(root, text="Low", variable=var, value=1)
+radio_low.grid(row=1, column=2, sticky='E')
+radio_middle = Radiobutton(root, text="Medium", variable=var, value=0)
+radio_middle.grid(row=1, column=3, sticky='E')
+radio_strong = Radiobutton(root, text="Strong", variable=var, value=3)
+radio_strong.grid(row=1, column=4, sticky='E')
+combo = Combobox(root, textvariable=var1)
 
-frame2 = Frame(
-    frame
-)
-frame2.grid(row=2, column=2, pady=5)
+# Combo Box for length of your password
+combo['values'] = (8, 9, 10, 11, 12, 13, 14, 15, 16,
+				17, 18, 19, 20, 21, 22, 23, 24, 25,
+				26, 27, 28, 29, 30, 31, 32, "Length")
+combo.current(0)
+combo.bind('<<ComboboxSelected>>')
+combo.grid(column=1, row=1)
 
-male_rb = Radiobutton(
-    frame2,
-    text = 'Male',
-    variable = var,
-    value = 1
-)
-male_rb.pack(side=LEFT)
-
-female_rb = Radiobutton(
-    frame2,
-    text = 'Female',
-    variable = var,
-    value = 2
-)
-female_rb.pack(side=RIGHT)
-
-height_lb = Label(
-    frame,
-    text="Enter Height (cm)  "
-)
-height_lb.grid(row=3, column=1)
-
-weight_lb = Label(
-    frame,
-    text="Enter Weight (kg)  ",
-
-)
-weight_lb.grid(row=4, column=1)
-
-height_tf = Entry(
-    frame,
-)
-height_tf.grid(row=3, column=2, pady=5)
-
-weight_tf = Entry(
-    frame,
-)
-weight_tf.grid(row=4, column=2, pady=5)
-
-frame3 = Frame(
-    frame
-)
-frame3.grid(row=5, columnspan=3, pady=10)
-
-cal_btn = Button(
-    frame3,
-    text='Calculate',
-    command=calculate_bmi
-)
-cal_btn.pack(side=LEFT)
-
-reset_btn = Button(
-    frame3,
-    text='Reset',
-    command=reset_entry
-)
-reset_btn.pack(side=LEFT)
-
-exit_btn = Button(
-    frame3,
-    text='Exit',
-    command=lambda:ws.destroy()
-)
-exit_btn.pack(side=RIGHT)
-
-ws.mainloop()
+# start the GUI
+root.mainloop()
